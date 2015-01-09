@@ -197,7 +197,7 @@
             $('#smartbanner').addClass('no-icon');
         }
 
-        this.bannerHeight = $('#smartbanner').outerHeight() + 2;
+        this.bannerHeight = $('#smartbanner').outerHeight();
 
         if (this.scale > 1) {
             $('#smartbanner')
@@ -235,16 +235,16 @@
                 .emulateTransitionEnd(speed)
                 .css('top', 0);
 
-            $('html')
+            $('body > section')
                 .addClass('sb-animation')
                 .one($.support.transition.end, function() {
-                    $('html').removeClass('sb-animation');
+                    $('body > section').removeClass('sb-animation');
                 })
                 .emulateTransitionEnd(speed)
                 .css('margin-top', top);
         } else {
             banner.animate({top: 0}, { duration: speed, easing: 'swing' }).addClass('shown');
-            $('html').animate({marginTop: top}, { duration: speed, easing: 'swing' });
+            $('body > section').animate({marginTop: top}, { duration: speed, easing: 'swing' });
         }
     };
 
@@ -265,16 +265,16 @@
                 .removeClass('shown')
                 .css('top', top);
 
-            $('html')
+            $('body > section')
                 .addClass('sb-animation')
                 .one($.support.transition.end, function() {
-                    $('html').css('margin-top', "").removeClass('sb-animation');
+                    $('body > section').css('margin-top', "").removeClass('sb-animation');
                 })
                 .emulateTransitionEnd(speed)
                 .css('margin-top', this.origHtmlMargin);
         } else {
             banner.animate({top: top}, { duration: speed, easing: 'swing' }).addClass('shown');
-            $('html').animate({marginTop: this.origHtmlMargin}, { duration: speed, easing: 'swing' });
+            $('body > section').animate({marginTop: this.origHtmlMargin}, { duration: speed, easing: 'swing' });
         }
     };
 
