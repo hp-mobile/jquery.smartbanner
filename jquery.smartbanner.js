@@ -4,10 +4,11 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * Based on 'jQuery Smart Web App Banner' by Kurt Zenisek @ kzeni.com
  */
+/* jshint browser: true */
 !function ($) {
     var SmartBanner = function (options) {
         this.origHtmlMargin = parseFloat($('html').css('margin-top')); // Get the original margin-top of the HTML element so we can take that into account
-        var options = $.extend({}, $.smartbanner.defaults, options);
+        options = $.extend({}, $.smartbanner.defaults, options);
         
         this.os = options.force || this.detectOS();
         
@@ -25,7 +26,7 @@
         if (!this.options.appId) return;
         
         // Calculate scale
-        this.scale = this.options.scale === 'auto' ? $(window).width() / window.screen.width : this.options.scale
+        this.scale = this.options.scale === 'auto' ? $(window).width() / window.screen.width : this.options.scale;
         if (this.scale < 1) this.scale = 1;
 
         if (!this.options.title) this.options.title = $('title').text().replace(/\s*[|\-·].*$/, '');
@@ -36,7 +37,7 @@
         this.create();
         this.listen();
         this.show();
-    }
+    };
 
     SmartBanner.prototype.constructor = SmartBanner;
 
@@ -55,7 +56,7 @@
         }
         
         return null;
-    }
+    };
 
     // Check native smart banner support (iOS 6+)
     SmartBanner.prototype.hasNativeSupport = function() {
@@ -63,13 +64,13 @@
         
         return UA.match(/iPhone|iPod|iPad/i) && UA.match(/Safari/i) && !UA.match(/CriOS/i) &&
             Number(UA.substr(UA.indexOf('OS ') + 3, 3).replace('_', '.')) >= 6;
-    }
+    };
 
     // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
     SmartBanner.prototype.isUIWebView = function () {
         var UA = navigator.userAgent;
         return navigator.standalone || (UA.match(/iPhone|iPod|iPad/i) && !UA.match(/Safari/i));
-    }
+    };
     
     // Get meta data
     SmartBanner.prototype.getMeta = function() {
@@ -94,7 +95,7 @@
         
         $.extend(meta, $(selector).data());
         return meta;
-    }
+    };
     
     SmartBanner.prototype.getWindowsMeta = function() {
         var meta = {};
@@ -104,7 +105,7 @@
         
         $.extend(meta, $('meta[name="msApplication-ID"]').data());
         return meta;
-    }
+    };
 
     // Get application URL
     SmartBanner.prototype.getUrl = function () {
@@ -116,7 +117,7 @@
             case 'kindle':  return 'amzn://apps/android?asin=' + this.options.appId;
             case 'windows': return 'ms-windows-store:PDP?PFN=' + this.options.appPfn;
         }
-    }
+    };
     
     // Get the URL to the icon
     SmartBanner.prototype.getIconUrl = function() {
@@ -139,13 +140,13 @@
         }
         
         return url;
-    }
+    };
     
     // Check if icon should have gloss effect
     SmartBanner.prototype.getIconGloss = function () {
         if (this.options.iconGloss !== null) return this.options.iconGloss;
         return this.os === 'ios' && $('link[rel="apple-touch-icon-precomposed"]').length > 0;
-    }
+    };
     
     
     // Create the smartbanner element
@@ -191,13 +192,13 @@
                 .css('width', $(window).width() / this.scale);
         }
         $('#smartbanner').css('position', (this.options.layer) ? 'absolute' : 'static');
-    }
+    };
     
     // Listen for click events
     SmartBanner.prototype.listen = function () {
         $('#smartbanner .sb-close').on('click', $.proxy(this.close, this));
         $('#smartbanner .sb-button').on('click', $.proxy(this.install, this));
-    }
+    };
     
     // Show smartbanner
     SmartBanner.prototype.show = function() {
@@ -226,7 +227,7 @@
             banner.animate({top: 0}, { duration: speed, easing: 'swing' }).addClass('shown');
             $('html').animate({marginTop: top}, { duration: speed, easing: 'swing' });
         }
-    }
+    };
     
     // Hide smartbanner
     SmartBanner.prototype.hide = function() {
@@ -256,7 +257,7 @@
             banner.animate({top: top}, { duration: speed, easing: 'swing' }).addClass('shown');
             $('html').animate({marginTop: this.origHtmlMargin}, { duration: speed, easing: 'swing' });
         }
-    }
+    };
 
     // Destroy the smartbanner
     SmartBanner.prototype.destroy = function() {
@@ -266,20 +267,20 @@
         }, this));
         
         this.hide();
-    }
+    };
 
     // Close event handler
     SmartBanner.prototype.close = function(e) {
         e.preventDefault();
         this.hide();
         setCookie('sb-closed', 'true', this.options.daysHidden);
-    }
+    };
     
     // Install event handler
-    SmartBanner.prototype.install = function(e) {
+    SmartBanner.prototype.install = function() {
         if (this.options.hideOnInstall) this.hide();
         setCookie('sb-installed', 'true', this.options.daysReminder);
-    }
+    };
        
 
     // Camelcase a string
@@ -318,7 +319,7 @@
         
         if (!data) $window.data('smartbanner', (data = new SmartBanner(options)));
         if (typeof option === 'string') return data[option];
-    }
+    };
 
     // override these globally if you like (they are all optional)
     $.smartbanner.defaults = {
@@ -356,7 +357,7 @@
         },
         
         force: null // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
-    }
+    };
     
     $.smartbanner.Constructor = SmartBanner;
 }(window.jQuery);
@@ -391,16 +392,16 @@
 
     // http://blog.alexmaccaw.com/css-transitions
     $.fn.emulateTransitionEnd = function(duration) {
-        var called = false, $el = this
+        var called = false, $el = this;
         $(this).one($.support.transition.end, function() {
             called = true;
         });
         var callback = function() {
             if (!called) $($el).trigger($.support.transition.end);
-        }
+        };
         setTimeout(callback, duration);
         return this;
-    }
+    };
 
     $.support.transition = transitionEnd();
 }(window.jQuery);
